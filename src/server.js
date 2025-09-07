@@ -4,10 +4,8 @@ const logger = require('./config/logging');
 
 const { port } = environment;
 
-const server = app.listen(port, () => {
-  logger.info(`🚀 Server starting...`);
-  logger.info(`Environment: ${environment.nodeEnv}`);
-  logger.info(`Listening for requests on port ${port}`);
+const server = app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
 });
 
 // --- Graceful Shutdown ---
