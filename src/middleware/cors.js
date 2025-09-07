@@ -10,7 +10,7 @@ const corsOptions = {
   // In a real-world scenario, this would be set to something like:
   // origin: 'https://your-frontend-app.com',
   origin: '*', // Allowing all for now for ease of development/testing
-  methods: 'GET, POST', // Only allowing necessary methods
+  methods: 'GET, POST','OPTIONS', // Only allowing necessary methods
   allowedHeaders: ['Content-Type'],
   optionsSuccessStatus: 200, // For legacy browser support
 };
