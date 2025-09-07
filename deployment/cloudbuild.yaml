@@ -9,17 +9,18 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
-      - '.'
+      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
       - '-f'
       - 'docker/Dockerfile' # Specify the Dockerfile location
+      - '.'                 # The build context path MUST be the last argument
 
   # 2. Push the container image to Google Artifact Registry
-  # Artifact Registry is the recommended service for storing container images.
+  # This step is now handled automatically by the 'images' section below,
+  # but can be kept for explicit clarity if you prefer.
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
+      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
 
   # 3. Deploy the new container image to Cloud Run
   # This step updates the existing Cloud Run service to use the new image.
@@ -30,17 +31,19 @@ steps:
       - 'deploy'
       - 'lost-loot-api' # The name of your Cloud Run service
       - '--image'
-      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
+      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
       - '--region'
       - 'asia-south1' # Specify the region for the service
       - '--platform'
       - 'managed'
+      - '--allow-unauthenticated' # Add this if it's a public API
       - '--quiet' # Suppress interactive prompts
 
 # This specifies the image that was built, making it available for other steps
-# or for viewing in the build details.
+# and instructing Cloud Build to push it to the registry.
+# THIS MUST MATCH THE IMAGE TAG FROM THE BUILD STEP.
 images:
-  - 'asia-south1-docker.pkg.dev/the-lost-loot-cloud/containers/the-lost-loot-backend:20250907-131126'
+  - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
 
 # Set a timeout for the build
 timeout: '1200s'
