@@ -40,7 +40,7 @@ steps:
 # This specifies the image that was built, making it available for other steps
 # or for viewing in the build details.
 images:
-  - '$IMAGE'
+  - 'asia-south1-docker.pkg.dev/the-lost-loot-cloud/containers/the-lost-loot-backend:20250907-131126'
 
 # Set a timeout for the build
 timeout: '1200s'
