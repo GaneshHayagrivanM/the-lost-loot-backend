@@ -1,0 +1,46 @@
+# Google Cloud Build configuration for continuous deployment.
+# This file defines the steps to build the Docker image, push it to the
+# Artifact Registry, and deploy it to Cloud Run.
+
+steps:
+  # 1. Build the container image
+  # The image is tagged with the commit SHA for versioning.
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
+      - '.'
+      - '-f'
+      - 'docker/Dockerfile' # Specify the Dockerfile location
+
+  # 2. Push the container image to Google Artifact Registry
+  # Artifact Registry is the recommended service for storing container images.
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
+
+  # 3. Deploy the new container image to Cloud Run
+  # This step updates the existing Cloud Run service to use the new image.
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'lost-loot-api' # The name of your Cloud Run service
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1' # Specify the region for the service
+      - '--platform'
+      - 'managed'
+      - '--quiet' # Suppress interactive prompts
+
+# This specifies the image that was built, making it available for other steps
+# or for viewing in the build details.
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
+
+# Set a timeout for the build
+timeout: '1200s'
