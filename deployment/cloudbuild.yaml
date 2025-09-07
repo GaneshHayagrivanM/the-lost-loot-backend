@@ -1,29 +1,24 @@
-# Google Cloud Build configuration for continuous deployment.
-# This file defines the steps to build the Docker image, push it to the
-# Artifact Registry, and deploy it to Cloud Run.
+# Google Cloud Build configuration for manual deployment.
+# This file defines the steps to build, push, and deploy to Cloud Run.
 
 steps:
-  # 1. Build the container image
-  # The image is tagged with the commit SHA for versioning.
+  # 1. Build the container image with a static 'latest' tag
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
-      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
+      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:latest'
       - '-f'
-      - 'docker/Dockerfile' # Specify the Dockerfile location
-      - '.'                 # The build context path MUST be the last argument
+      - 'docker/Dockerfile'
+      - '.'
 
   # 2. Push the container image to Google Artifact Registry
-  # This step is now handled automatically by the 'images' section below,
-  # but can be kept for explicit clarity if you prefer.
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
+      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:latest'
 
   # 3. Deploy the new container image to Cloud Run
-  # This step updates the existing Cloud Run service to use the new image.
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
@@ -31,19 +26,16 @@ steps:
       - 'deploy'
       - 'lost-loot-api' # The name of your Cloud Run service
       - '--image'
-      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
+      - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:latest'
       - '--region'
-      - 'asia-south1' # Specify the region for the service
+      - 'asia-south1'
       - '--platform'
       - 'managed'
-      - '--allow-unauthenticated' # Add this if it's a public API
-      - '--quiet' # Suppress interactive prompts
+      - '--allow-unauthenticated' # Makes the service public
+      - '--quiet'
 
-# This specifies the image that was built, making it available for other steps
-# and instructing Cloud Build to push it to the registry.
-# THIS MUST MATCH THE IMAGE TAG FROM THE BUILD STEP.
+# This specifies the image that was built, so Cloud Build knows to push it.
 images:
-  - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:${COMMIT_SHA:-latest}'
+  - 'asia-south1-docker.pkg.dev/${PROJECT_ID}/lost-loot-repo/lost-loot-api:latest'
 
-# Set a timeout for the build
 timeout: '1200s'
