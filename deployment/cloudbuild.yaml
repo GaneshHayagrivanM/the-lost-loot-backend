@@ -40,7 +40,7 @@ steps:
 # This specifies the image that was built, making it available for other steps
 # or for viewing in the build details.
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
+  - '$IMAGE'
 
 # Set a timeout for the build
 timeout: '1200s'
