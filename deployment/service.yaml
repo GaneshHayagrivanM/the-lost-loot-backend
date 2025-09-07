@@ -18,8 +18,7 @@ spec:
     spec:
       # The service account used by the service to access other Google Cloud services
       # This needs to have permissions for Firestore, Logging, etc.
-      serviceAccountName: your-service-account@your-project-id.iam.gserviceaccount.com
-
+      serviceAccountName: 178393477736-compute@developer.gserviceaccount.com
       containers:
         - image: asia-south1-docker.pkg.dev/the-lost-loot-cloud/lost-loot-repo/lost-loot-api
           ports:
