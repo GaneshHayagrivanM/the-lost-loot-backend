@@ -9,7 +9,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
       - '.'
       - '-f'
       - 'docker/Dockerfile' # Specify the Dockerfile location
@@ -19,7 +19,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
 
   # 3. Deploy the new container image to Cloud Run
   # This step updates the existing Cloud Run service to use the new image.
@@ -30,9 +30,9 @@ steps:
       - 'deploy'
       - 'lost-loot-api' # The name of your Cloud Run service
       - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/lost-loot-repo/lost-loot-api:$COMMIT_SHA'
       - '--region'
-      - 'us-central1' # Specify the region for the service
+      - 'asia-south1' # Specify the region for the service
       - '--platform'
       - 'managed'
       - '--quiet' # Suppress interactive prompts
