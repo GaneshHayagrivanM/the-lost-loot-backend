@@ -21,7 +21,7 @@ spec:
       serviceAccountName: your-service-account@your-project-id.iam.gserviceaccount.com
 
       containers:
-        - image: us-central1-docker.pkg.dev/your-project-id/lost-loot-repo/lost-loot-api
+        - image: asia-south1-docker.pkg.dev/the-lost-loot-cloud/lost-loot-repo/lost-loot-api
           ports:
             - name: http1
               containerPort: 8080
