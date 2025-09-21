@@ -23,17 +23,17 @@ app.use(helmet());
 app.use(corsMiddleware);
 
 // Rate limiting to prevent abuse
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per window
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: {
-    title: 'Too Many Requests',
-    detail: 'You have exceeded the request limit. Please try again later.',
-  },
-});
-app.use('/api/', apiLimiter);
+// const apiLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // Limit each IP to 100 requests per window
+//   standardHeaders: true,
+//   legacyHeaders: false,
+//   message: {
+//     title: 'Too Many Requests',
+//     detail: 'You have exceeded the request limit. Please try again later.',
+//   },
+// });
+// app.use('/api/', apiLimiter);
 
 // Body parser for JSON payloads
 app.use(express.json());
