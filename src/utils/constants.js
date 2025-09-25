@@ -9,22 +9,19 @@ const CHECKPOINT_UNLOCK_RULES = {
   1: [2, 3],
   2: [4],
   3: [4],
-  4: [5, 6],
-  5: [7],
-  6: [7],
-  7: [8], // Completing checkpoint 7 unlocks the final checkpoint.
+  4: [5],
 };
 
 // Defines which checkpoints award a key upon completion.
-const KEY_CHECKPOINTS = [1, 4, 7];
+const KEY_CHECKPOINTS = [1, 3, 4];
 
 // The ID of the final checkpoint in the game.
-const FINAL_CHECKPOINT_ID = 8;
+const FINAL_CHECKPOINT_ID = 5;
 
 // Defines the requirements for a team to be able to end the game.
 const FINAL_CHECKPOINT_REQUIREMENTS = {
   // This refers to the number of *other* checkpoints that must be completed.
-  requiredCheckpoints: 7,
+  requiredCheckpoints: 4,
   requiredKeys: 3,
 };
 
