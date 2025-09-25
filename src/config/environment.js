@@ -6,7 +6,7 @@ const environment = {
   googleCloudProject: process.env.GOOGLE_CLOUD_PROJECT,
   firestoreDatabaseId: process.env.FIRESTORE_DATABASE_ID || '(default)',
   logLevel: process.env.LOG_LEVEL || 'info',
-  cacheTtl: parseInt(process.env.CACHE_TTL || '300', 10),
+  cacheTtl: parseInt(process.env.CACHE_TTL || '30', 10),
 };
 
 module.exports = environment;
