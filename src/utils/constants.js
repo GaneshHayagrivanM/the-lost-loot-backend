@@ -6,8 +6,8 @@
 // Defines the progression path of the game.
 // The key is the completed checkpointId, and the value is an array of checkpointIds that are unlocked.
 const CHECKPOINT_UNLOCK_RULES = {
-  1: [2, 3],
-  2: [4],
+  1: [2],
+  2: [3],
   3: [4],
   4: [5],
 };
